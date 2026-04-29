@@ -1,0 +1,4 @@
+/.idea/
+/backup/
+*.log
+.DS_Store

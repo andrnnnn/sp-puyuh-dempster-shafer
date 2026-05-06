@@ -87,6 +87,7 @@ $isLoggedIn = isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] 
                         Gejala dipilih: <strong id="selectedCount">0</strong> dari <?php echo $totalGejala; ?>
                         <span id="minWarning" class="text-danger ms-2 small"><i class="bi bi-exclamation-circle"></i> Minimal 3 gejala</span>
                         <span id="minOk" class="text-success ms-2 small d-none"><i class="bi bi-check-circle"></i> Siap diagnosis</span>
+                        <span id="maxWarning" class="text-warning ms-2 small d-none fw-bold"><i class="bi bi-info-circle"></i> Batas maksimal (10) tercapai!</span>
                     </div>
                     
                     <form action="user/process.php" method="POST" id="diagnosisForm">
@@ -131,13 +132,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitHint = document.getElementById('submitHint');
     const minWarning = document.getElementById('minWarning');
     const minOk = document.getElementById('minOk');
+    const maxWarning = document.getElementById('maxWarning');
     const MIN_GEJALA = 3;
+    const MAX_GEJALA = 10;
 
     function updateUI() {
-        const checked = document.querySelectorAll('.symptom-checkbox:checked').length;
-        counter.textContent = checked;
+        const checkedCount = document.querySelectorAll('.symptom-checkbox:checked').length;
+        counter.textContent = checkedCount;
 
-        if (checked >= MIN_GEJALA) {
+        // Validasi minimal 3 gejala
+        if (checkedCount >= MIN_GEJALA) {
             submitBtn.disabled = false;
             submitHint.classList.add('d-none');
             minWarning.classList.add('d-none');
@@ -148,6 +152,25 @@ document.addEventListener('DOMContentLoaded', function() {
             minWarning.classList.remove('d-none');
             minOk.classList.add('d-none');
         }
+
+        // Tampilkan peringatan jika mencapai batas maksimal
+        if (checkedCount >= MAX_GEJALA) {
+            maxWarning.classList.remove('d-none');
+            minOk.classList.add('d-none'); // Sembunyikan pesan "Siap diagnosis" saat max tercapai agar tidak menumpuk
+        } else {
+            maxWarning.classList.add('d-none');
+        }
+
+        // Validasi maksimal 10 gejala: disable checkbox yang belum dicentang
+        checkboxes.forEach(function(checkbox) {
+            if (checkedCount >= MAX_GEJALA) {
+                if (!checkbox.checked) {
+                    checkbox.disabled = true;
+                }
+            } else {
+                checkbox.disabled = false;
+            }
+        });
     }
 
     checkboxes.forEach(function(checkbox) {

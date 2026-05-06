@@ -12,7 +12,12 @@
  * Contoh: Gejala G01 bisa terkait dengan P01, P03 (2 baris data)
  */
 function get_rules_by_symptom($pdo, $id_gejala) {
-    $stmt = $pdo->prepare("SELECT kode_penyakit, mb FROM basis_pengetahuan WHERE kode_gejala = ?");
+    $stmt = $pdo->prepare("
+        SELECT bp.kode_penyakit, bp.mb 
+        FROM basis_pengetahuan bp
+        JOIN penyakit p ON bp.kode_penyakit = p.id_penyakit
+        WHERE bp.kode_gejala = ? AND p.status = 'aktif'
+    ");
     $stmt->execute([$id_gejala]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

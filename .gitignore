@@ -2,3 +2,5 @@
 /backup/
 *.log
 .DS_Store
+database lama.sql
+database lama 2.sql

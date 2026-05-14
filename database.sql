@@ -85,8 +85,8 @@ CREATE TABLE `gejala` (
 
 INSERT INTO `gejala` (`id_gejala`, `nama_gejala`, `status`) VALUES
 ('G01', 'Tinja terdapat darah', 'aktif'),
-('G02', 'Tinja cair atau berair', 'aktif'),
-('G03', 'Tinja berwarna kuning cerah', 'aktif'),
+('G02', 'Tinja berwarna putih', 'aktif'),
+('G03', 'Tinja berwarna hijau', 'aktif'),
 ('G04', 'Nafsu makan menurun', 'aktif'),
 ('G05', 'Berat badan menurun atau tampak kurus', 'aktif'),
 ('G06', 'Terjadi kematian mendadak', 'aktif'),
@@ -104,11 +104,13 @@ INSERT INTO `gejala` (`id_gejala`, `nama_gejala`, `status`) VALUES
 ('G18', 'Mulut berbau busuk', 'aktif'),
 ('G19', 'Tinja berbau sangat busuk', 'aktif'),
 ('G20', 'Pertumbuhan tubuh lambat', 'aktif'),
-('G21', 'Sayap terkulai atau berjalan tidak seimbang', 'aktif'),
+('G21', 'Sayap terkulai', 'aktif'),
 ('G22', 'Kelopak mata lengket sehingga mata menutup', 'aktif'),
 ('G23', 'Bau kandang sangat menyengat', 'aktif'),
-('G24', 'Tinja berlendir atau berbusa', 'aktif'),
-('G25', 'Terdapat cacing pada tinja', 'aktif');
+('G24', 'Tinja berlendir', 'aktif'),
+('G25', 'Terdapat cacing pada tinja', 'aktif'),
+('G26', 'Tinja menempel di dubur', 'aktif'),
+('G27', 'Tinja berbuih atau berbusa', 'aktif');
 
 -- --------------------------------------------------------
 -- Table: basis_pengetahuan (Tabel Pivot/Relasi)
@@ -127,73 +129,101 @@ CREATE TABLE `basis_pengetahuan` (
 
 -- Data basis pengetahuan (1 baris = 1 relasi gejala-penyakit)
 INSERT INTO `basis_pengetahuan` (`kode_gejala`, `kode_penyakit`, `mb`) VALUES
--- G01: Tinja mengandung darah
-('G01', 'P03', 0.9),
--- G02: Tinja cair atau berair
-('G02', 'P01', 0.6),
-('G02', 'P05', 0.6),
--- G03: Tinja berwarna kuning cerah
-('G03', 'P05', 0.9),
--- G04: Nafsu makan menurun
-('G04', 'P01', 0.4),
-('G04', 'P05', 0.4),
-('G04', 'P06', 0.4),
--- G05: Berat badan menurun
-('G05', 'P05', 0.6),
-('G05', 'P06', 0.6),
--- G06: Kematian mendadak
-('G06', 'P01', 0.5),
-('G06', 'P03', 0.5),
-('G06', 'P04', 0.5),
-('G06', 'P05', 0.5),
--- G07: Burung tampak lesu
-('G07', 'P01', 0.4),
-('G07', 'P03', 0.4),
-('G07', 'P04', 0.4),
-('G07', 'P05', 0.4),
--- G08: Bulu berdiri dan kusam
-('G08', 'P05', 0.55),
-('G08', 'P06', 0.55),
--- G09: Produksi telur menurun
-('G09', 'P02', 0.6),
-('G09', 'P04', 0.6),
--- G10: Burung batuk atau bersin
-('G10', 'P02', 0.6),
-('G10', 'P04', 0.6),
--- G11: Napas berbunyi seperti ngorok
-('G11', 'P02', 0.55),
-('G11', 'P04', 0.55),
--- G12: Sulit bernapas
-('G12', 'P06', 0.9),
--- G13: Keluar lendir dari hidung
-('G13', 'P02', 0.9),
--- G14: Mata bengkak dan berair
-('G14', 'P02', 0.9),
--- G15: Kepala berputar
-('G15', 'P04', 0.9),
--- G16: Tidak mampu berdiri
+-- G01
+('G01', 'P03', 0.90),
+-- G02
+('G02', 'P01', 0.90),
+-- G03
+('G03', 'P04', 0.85),
+('G03', 'P05', 0.85),
+-- G04
+('G04', 'P01', 0.50),
+('G04', 'P02', 0.50),
+('G04', 'P03', 0.50),
+('G04', 'P04', 0.50),
+('G04', 'P05', 0.50),
+-- G05
+('G05', 'P01', 0.45),
+('G05', 'P02', 0.45),
+('G05', 'P03', 0.45),
+('G05', 'P04', 0.45),
+('G05', 'P05', 0.45),
+('G05', 'P06', 0.45),
+-- G06
+('G06', 'P01', 0.70),
+('G06', 'P03', 0.70),
+('G06', 'P04', 0.70),
+('G06', 'P05', 0.70),
+-- G07
+('G07', 'P01', 0.45),
+('G07', 'P02', 0.45),
+('G07', 'P03', 0.45),
+('G07', 'P04', 0.45),
+('G07', 'P05', 0.45),
+-- G08
+('G08', 'P01', 0.45),
+('G08', 'P02', 0.45),
+('G08', 'P03', 0.45),
+('G08', 'P04', 0.45),
+('G08', 'P05', 0.45),
+('G08', 'P06', 0.45),
+-- G09
+('G09', 'P01', 0.45),
+('G09', 'P02', 0.45),
+('G09', 'P03', 0.45),
+('G09', 'P04', 0.45),
+('G09', 'P05', 0.45),
+('G09', 'P06', 0.45),
+-- G10
+('G10', 'P02', 0.75),
+('G10', 'P04', 0.75),
+-- G11
+('G11', 'P02', 0.80),
+('G11', 'P04', 0.80),
+-- G12
+('G12', 'P02', 0.80),
+('G12', 'P04', 0.80),
+-- G13
+('G13', 'P02', 0.90),
+-- G14
+('G14', 'P02', 0.90),
+-- G15
+('G15', 'P04', 0.90),
+-- G16
 ('G16', 'P04', 0.85),
--- G17: Tremor atau gemetar
+-- G17
 ('G17', 'P04', 0.85),
--- G18: Mulut berbau busuk
-('G18', 'P05', 0.85),
--- G19: Tinja berbau sangat busuk
+-- G18
+('G18', 'P02', 0.85),
+-- G19
 ('G19', 'P05', 0.85),
--- G20: Pertumbuhan tubuh lambat
-('G20', 'P01', 0.55),
-('G20', 'P06', 0.55),
--- G21: Sayap terkulai
-('G21', 'P04', 0.55),
-('G21', 'P06', 0.55),
--- G22: Kelopak mata lengket
+-- G20
+('G20', 'P01', 0.45),
+('G20', 'P02', 0.45),
+('G20', 'P03', 0.45),
+('G20', 'P04', 0.45),
+('G20', 'P05', 0.45),
+('G20', 'P06', 0.45),
+-- G21
+('G21', 'P01', 0.75),
+('G21', 'P03', 0.75),
+('G21', 'P05', 0.75),
+-- G22
 ('G22', 'P02', 0.85),
--- G23: Bau kandang menyengat
+-- G23
 ('G23', 'P05', 0.85),
--- G24: Tinja berlendir atau berbusa
-('G24', 'P03', 0.6),
-('G24', 'P05', 0.6),
--- G25: Terdapat cacing pada tinja
-('G25', 'P06', 0.9);
+-- G24
+('G24', 'P01', 0.70),
+('G24', 'P03', 0.70),
+('G24', 'P05', 0.70),
+('G24', 'P06', 0.70),
+-- G25
+('G25', 'P06', 0.90),
+-- G26
+('G26', 'P01', 0.90),
+-- G27
+('G27', 'P03', 0.85),
+('G27', 'P05', 0.85);
 
 -- --------------------------------------------------------
 -- Foreign Key Constraints

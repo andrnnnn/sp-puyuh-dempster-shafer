@@ -348,41 +348,74 @@ if (isset($_SESSION['user_logged_in'])) {
            ============================================= */
         @media (max-width: 767.98px) {
             .hero-section {
-                padding: 50px 0;
+                padding: 40px 0;
             }
             .hero-title {
-                font-size: 1.6rem;
+                font-size: 1.35rem;
             }
             .hero-subtitle {
-                font-size: 0.95rem;
+                font-size: 0.85rem;
             }
             .hero-stats {
-                gap: 1rem;
+                gap: 0.8rem;
                 flex-wrap: wrap;
                 justify-content: center;
             }
             .stat-number {
-                font-size: 1.4rem;
-            }
-            .main-card {
-                border-radius: 14px;
-            }
-            .card-header-custom {
-                padding: 1.2rem 1rem;
-            }
-            .card-header-custom h3 {
                 font-size: 1.2rem;
             }
+            .stat-label {
+                font-size: 0.75rem;
+            }
+            .main-card {
+                border-radius: 12px;
+            }
+            .card-header-custom {
+                padding: 1rem;
+            }
+            .card-header-custom h3 {
+                font-size: 1.1rem;
+            }
+            .card-header-custom p {
+                font-size: 0.8rem;
+            }
             .result-header {
-                padding: 1.5rem 1rem;
+                padding: 1.2rem 1rem;
+            }
+            .result-header h4 {
+                font-size: 1.1rem !important;
+            }
+            .result-header h2 {
+                font-size: 1.4rem !important;
+            }
+            .confidence-badge {
+                font-size: 0.8rem;
+                padding: 0.4rem 1rem;
             }
             .btn-submit {
-                padding: 0.85rem 2rem;
-                font-size: 1rem;
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
             }
             .footer {
-                margin-top: 2rem;
-                padding: 1.5rem 0;
+                margin-top: 1.5rem;
+                padding: 1.2rem 0;
+            }
+            
+            /* Perbaikan layout kartu gejala di mobile */
+            .symptom-card {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0.7rem;
+            }
+            .symptom-card .symptom-badge {
+                margin-right: 0;
+                margin-bottom: 0.4rem;
+                font-size: 0.65rem;
+                padding: 0.2rem 0.5rem;
+            }
+            .symptom-card .symptom-text {
+                font-size: 0.75rem;
+                line-height: 1.3;
             }
         }
     </style>

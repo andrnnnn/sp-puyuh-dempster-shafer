@@ -96,13 +96,24 @@ $pdf_data = [
             <div class="result-card animate-in">
                 
                 <!-- Header Hasil -->
-                <div class="result-header">
-                    <h4 class="mb-3 fw-bold">Hasil Diagnosis</h4>
+                <div class="result-header <?php echo ($penyakit_data && $confidence < 60) ? 'bg-warning' : ''; ?>">
+                    <h4 class="mb-3 fw-bold text-white">
+                        <?php 
+                        if ($penyakit_data && $confidence < 60) {
+                            echo "Indikasi Awal Diagnosis";
+                        } else {
+                            echo "Hasil Diagnosis";
+                        }
+                        ?>
+                    </h4>
                     
                     <?php if (!empty($results) && $penyakit_data): ?>
-                        <h2 class="mb-3"><?php echo $penyakit_data['nama_penyakit']; ?></h2>
-                        <div class="confidence-badge">
-                            Tingkat Keyakinan: <?php echo number_format($confidence, 1); ?>%
+                        <h2 class="mb-3 text-white"><?php echo $penyakit_data['nama_penyakit']; ?></h2>
+                        
+                        <div class="d-flex flex-column align-items-center mt-3">
+                            <div class="confidence-badge mb-2 <?php echo ($confidence < 60) ? 'bg-danger' : ''; ?>">
+                                Tingkat Keyakinan: <?php echo number_format($confidence, 1); ?>%
+                            </div>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -118,6 +129,22 @@ $pdf_data = [
                         </div>
                         
                     <?php elseif ($penyakit_data): ?>
+                        
+                        <?php if ($confidence < 60): ?>
+                            <!-- Peringatan Threshold Rendah -->
+                            <div class="alert alert-warning d-flex align-items-start gap-3 mb-4 border-warning shadow-sm">
+                                <i class="bi bi-exclamation-triangle-fill text-warning fs-3 mt-1"></i>
+                                <div>
+                                    <strong class="d-block mb-1">Perhatian: Gejala Belum Spesifik!</strong>
+                                    Gejala yang Anda pilih terlalu sedikit atau merupakan gejala umum, sehingga sistem belum dapat menyimpulkan diagnosis dengan tingkat kepastian yang tinggi. <br>
+                                    <strong>Sangat disarankan:</strong> 
+                                    <ul class="mb-0 mt-1 ps-3">
+                                        <li>Observasi puyuh Anda lebih lanjut dan konsultasi ulang dengan memasukkan gejala yang lebih spesifik.</li>
+                                        <li>Segera konsultasikan dengan dokter hewan jika kondisi puyuh memburuk.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                         
                         <!-- Gejala yang Dipilih -->
                         <div class="mb-4">
@@ -231,6 +258,13 @@ $pdf_data = [
                         </a>
                     </div>
                     
+                    <!-- Disclaimer Singkat -->
+                    <div class="text-center mt-5">
+                        <small class="text-muted" style="font-size: 0.85rem;">
+                            <strong>Disclaimer:</strong> Hasil ini adalah indikasi awal. Tetap konsultasikan dengan dokter hewan untuk diagnosis & penanganan pasti.
+                        </small>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -335,30 +369,39 @@ function exportPDF() {
     y += 8;
 
     if (d.diagnosis) {
+        const confValue = parseFloat(d.confidence);
+        const isLowConf = confValue < 60;
+        
         // Kotak Diagnosis Utama
-        doc.setFillColor(...green);
+        if (isLowConf) {
+            doc.setFillColor(245, 158, 11); // warna warning/kuning
+        } else {
+            doc.setFillColor(...green);
+        }
+        
         doc.roundedRect(14, y, W - 28, 22, 3, 3, 'F');
         doc.setTextColor(255, 255, 255);
+        
+        // Judul Kotak
         doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        if (isLowConf) {
+            doc.text('Indikasi Awal Diagnosis', W / 2, y + 6, { align: 'center' });
+        } else {
+            doc.text('Hasil Diagnosis', W / 2, y + 6, { align: 'center' });
+        }
+        
+        // Nama Penyakit
         doc.setFontSize(13);
-        doc.text(d.diagnosis, W / 2, y + 9, { align: 'center' });
+        doc.text(d.diagnosis, W / 2, y + 13, { align: 'center' });
+        
+        // Keyakinan
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(9);
-        doc.text('Tingkat Keyakinan (Belief): ' + d.confidence + '%', W / 2, y + 17, { align: 'center' });
+        doc.text('Tingkat Keyakinan: ' + d.confidence + '%', W / 2, y + 19, { align: 'center' });
+        
         y += 28;
 
-        // Progress bar keyakinan
-        const barW = W - 40;
-        const fillW = barW * (parseFloat(d.confidence) / 100);
-        doc.setFillColor(220, 252, 231);
-        doc.roundedRect(20, y, barW, 5, 2, 2, 'F');
-        doc.setFillColor(...green);
-        doc.roundedRect(20, y, fillW, 5, 2, 2, 'F');
-        doc.setTextColor(...muted);
-        doc.setFontSize(7);
-        doc.text('0%', 20, y + 9);
-        doc.text('100%', 20 + barW, y + 9, { align: 'right' });
-        y += 16;
 
     } else if (d.ambigu && d.ambigu.length > 0) {
         doc.setFillColor(254, 243, 199);

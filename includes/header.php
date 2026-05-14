@@ -6,6 +6,22 @@ if (session_status() === PHP_SESSION_NONE) {
 // Deteksi apakah sedang di dalam subfolder (misal: user/, auth/)
 $isInSubFolder = (basename(dirname($_SERVER['PHP_SELF'])) == 'user' || basename(dirname($_SERVER['PHP_SELF'])) == 'auth');
 $path = $isInSubFolder ? '../' : '';
+
+// Auto-logout: sesi kadaluarsa setelah 30 menit tidak aktif
+$session_timeout = 30 * 60; // 30 menit dalam detik
+if (isset($_SESSION['user_logged_in']) && isset($_SESSION['last_activity'])) {
+    if (time() - $_SESSION['last_activity'] > $session_timeout) {
+        session_unset();
+        session_destroy();
+        session_start();
+        $_SESSION['timeout_message'] = 'Sesi Anda telah berakhir karena tidak aktif. Silakan login kembali.';
+        header("Location: " . $path . "auth/login.php?timeout=1");
+        exit;
+    }
+}
+if (isset($_SESSION['user_logged_in'])) {
+    $_SESSION['last_activity'] = time();
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">

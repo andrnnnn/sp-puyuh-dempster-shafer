@@ -342,6 +342,49 @@ if (isset($_SESSION['user_logged_in'])) {
         .animate-in {
             animation: fadeInUp 0.5s ease forwards;
         }
+
+        /* =============================================
+           RESPONSIVE - Mobile optimizations
+           ============================================= */
+        @media (max-width: 767.98px) {
+            .hero-section {
+                padding: 50px 0;
+            }
+            .hero-title {
+                font-size: 1.6rem;
+            }
+            .hero-subtitle {
+                font-size: 0.95rem;
+            }
+            .hero-stats {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .stat-number {
+                font-size: 1.4rem;
+            }
+            .main-card {
+                border-radius: 14px;
+            }
+            .card-header-custom {
+                padding: 1.2rem 1rem;
+            }
+            .card-header-custom h3 {
+                font-size: 1.2rem;
+            }
+            .result-header {
+                padding: 1.5rem 1rem;
+            }
+            .btn-submit {
+                padding: 0.85rem 2rem;
+                font-size: 1rem;
+            }
+            .footer {
+                margin-top: 2rem;
+                padding: 1.5rem 0;
+            }
+        }
     </style>
 </head>
 <body>

@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <!-- Update Info -->
                     <form method="POST" class="mb-5">
-                        <h5 class="mb-3 text-success">Informasi Dasar</h5>
+                        <h5 class="mb-3" style="color: var(--primary);">Informasi Dasar</h5>
                         <div class="mb-3">
                             <label class="form-label">Username</label>
                             <input type="text" class="form-control" value="<?php echo htmlspecialchars($user['username']); ?>" disabled readonly>
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <!-- Change Password -->
                     <form method="POST" class="mt-4">
-                        <h5 class="mb-3 text-success">Ganti Password</h5>
+                        <h5 class="mb-3" style="color: var(--primary);">Ganti Password</h5>
                         <div class="mb-3">
                             <label class="form-label">Password Saat Ini</label>
                             <input type="password" name="current_password" class="form-control" required>
